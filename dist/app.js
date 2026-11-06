@@ -1,0 +1,10 @@
+'use strict';
+const menu=document.querySelector('.menu'),nav=document.querySelector('nav');
+menu.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')!=='true';menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'Close navigation':'Open navigation');nav.classList.toggle('open',open)});
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation');nav.classList.remove('open')}));
+document.querySelectorAll('[data-filter]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(b=>{b.classList.toggle('active',b===button);b.setAttribute('aria-pressed',String(b===button))});document.querySelectorAll('.space-card').forEach(card=>card.hidden=button.dataset.filter!=='all'&&card.dataset.category!==button.dataset.filter)}));
+const galleryDialog=document.querySelector('#space-dialog');
+document.querySelectorAll('.space-card').forEach(card=>card.addEventListener('click',()=>{const img=document.querySelector('#dialog-image');img.src=`assets/${card.dataset.image}.jpg`;img.alt=card.querySelector('img').alt;document.querySelector('#dialog-title').textContent=card.dataset.title;galleryDialog.showModal()}));
+document.querySelectorAll('dialog').forEach(dialog=>{dialog.querySelector('.close').addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close()}})});
+document.querySelector('#dialog-enquire').addEventListener('click',()=>galleryDialog.close());
+document.querySelector('#year').textContent=new Date().getFullYear();
